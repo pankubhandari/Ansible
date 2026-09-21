@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  - name: Remove htop
+    apt:
+       name: htop
+       state: absent
+
