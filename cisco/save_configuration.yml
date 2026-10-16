@@ -17,7 +17,7 @@
    - name: Config before write
      ansible.builtin.copy:
        content: "{{ startup.stdout[0] }}\n"
-       dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_pre_startup-config.txt"
+       dest: "/home/parth/Ansible/cisco/Routers_details/{{ inventory_hostname }}_pre_startup-config.txt"
      delegate_to: localhost
 
    - name: Saving configuration
@@ -38,5 +38,5 @@
    - name: Config after write
      ansible.builtin.copy:
           content: "{{ output.stdout[0] }}\n"
-          dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_post_startup-config.txt"
+          dest: "/home/parth/Ansible/cisco/Routers_details/{{ inventory_hostname }}_post_startup-config.txt"
      delegate_to: localhost
