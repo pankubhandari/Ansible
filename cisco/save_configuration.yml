@@ -1,0 +1,42 @@
+---
+- name: Save configuration
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+   - name: Startup config before write
+     cisco.ios.ios_command:
+         commands:
+            - show startup-config
+     register: startup
+
+   - name: Show pre-write config
+     debug:
+        var: startup.stdout_lines
+
+   - name: Config before write
+     ansible.builtin.copy:
+       content: "{{ startup.stdout[0] }}\n"
+       dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_pre_startup-config.txt"
+     delegate_to: localhost
+
+   - name: Saving configuration
+     cisco.ios.ios_command:
+        commands:
+              - wr
+
+   - name: Showing config
+     cisco.ios.ios_command:
+        commands:
+            - show startup-config
+     register: output
+
+   - name: Show the new startup config
+     debug:
+        var: output.stdout_lines
+
+   - name: Config after write
+     ansible.builtin.copy:
+          content: "{{ output.stdout[0] }}\n"
+          dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_post_startup-config.txt"
+     delegate_to: localhost

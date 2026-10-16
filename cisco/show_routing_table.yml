@@ -1,0 +1,21 @@
+---
+-  name: Show the routing table of the target nodes
+   hosts: routers
+   gather_facts: false
+
+   tasks:
+      - name: Routing Table
+        cisco.ios.ios_command:
+                commands:
+                      - show ip route
+        register: routes
+
+      - name: Print routing tables
+        debug:
+            msg: "{{ routes.stdout_lines[0] }}"
+
+      - name: Save the output in a file
+        ansible.builtin.copy:
+            content: "{{ routes.stdout[0] }}\n"
+            dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_routing_table.txt"
+        delegate_to: localhost

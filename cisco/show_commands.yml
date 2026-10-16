@@ -1,0 +1,15 @@
+---
+-  name: Run show commands on routers
+   hosts: routers
+   gather_facts: false
+
+   tasks:
+     - name: Run show commands
+       cisco.ios.ios_command:
+            commands:
+                - show ip interface brief
+       register: output
+
+     - name: Print show ip int brief
+       ansible.builtin.debug:
+            msg: "{{ output.stdout_lines[0] }}"

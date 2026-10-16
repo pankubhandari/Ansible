@@ -1,0 +1,31 @@
+---
+-  name: Save show run output to local files
+   hosts: routers
+   gather_facts: false
+
+   tasks:
+    - name: Create output folder on the control node
+      ansible.builtin.file:
+        path: /home/parth/Ansible/cisco
+        state: directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Collect show commands
+      cisco.ios.ios_command:
+        commands:
+            - show running-config
+            - show ip interface brief
+      register: output
+
+    - name: Save show run to a file
+      ansible.builtin.copy:
+         content: "{{ output.stdout[0] }}"
+         dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_running-config.txt"
+      delegate_to: localhost
+
+    - name: Save interface brief to a file
+      ansible.builtin.copy:
+        content: "{{ output.stdout[1] }}"
+        dest: "/home/parth/Ansible/cisco/{{ inventory_hostname }}_int_brief.txt"
+      delegate_to: localhost

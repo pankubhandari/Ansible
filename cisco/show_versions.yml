@@ -1,0 +1,15 @@
+---
+-  name: Show versions of routers
+   hosts: routers
+   gather_facts: false
+
+   tasks:
+     -  name: Show version
+        cisco.ios.ios_command:
+            commands:
+                - show version
+        register: version
+
+     -  name: Print version
+        debug:
+            msg: "{{ version.stdout_lines[0] }}"

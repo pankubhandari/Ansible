@@ -1,0 +1,23 @@
+---
+-  name: Configuring IP on interfaces
+   hosts: routers
+   gather_facts: false
+
+   tasks:
+      -  name: IP on Interfaces
+         cisco.ios.ios_config:
+             parents:
+                - interface g2
+             lines:
+                - ip address 10.1.1.{{ inventory_hostname[3:] }} 255.255.255.0
+                - no shutdown
+
+      -  name: Show ip interfaces
+         cisco.ios.ios_command:
+               commands:
+                    - show ip interface brief
+         register: output
+
+      -  name: Show the output
+         debug:
+            var: output.stdout_lines

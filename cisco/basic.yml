@@ -1,0 +1,17 @@
+---
+  - name: Initial Playbook
+    hosts: routers
+    gather_facts: false
+
+    tasks:
+        - name: Display Hostname
+          debug:
+             msg: "Router name is {{ inventory_hostname }}"
+
+        - name: Display OS
+          debug:
+             msg: "{{ inventory_hostname }} is running {{ ansible_network_os }}"
+
+        - name: Display management IP
+          debug:
+              msg:  "{{ inventory_hostname }} is reachable at {{ ansible_host }}"

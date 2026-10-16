@@ -1,0 +1,15 @@
+---
+-  name: Show run command filtering with pipe and section
+   hosts: routers
+   gather_facts: true
+
+   tasks:
+      - name: Show run with particular configuration
+        cisco.ios.ios_command:
+            commands:
+                - show run | sec interface
+        register: output
+
+      - name: Print the output
+        debug:
+            msg: "{{ output.stdout_lines[0] }}"
