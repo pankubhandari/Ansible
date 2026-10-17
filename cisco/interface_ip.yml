@@ -9,7 +9,7 @@
              parents:
                 - interface g2
              lines:
-                - no ip address 10.1.1.{{ inventory_hostname[3:] }} 255.255.255.0
+                - ip address 10.1.1.{{ inventory_hostname[3:] }} 255.255.255.0
                 - no shutdown
 
       -  name: Show ip interfaces
