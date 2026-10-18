@@ -1,0 +1,27 @@
+---
+-  name: Eigrp configuration
+   hosts: routers
+   gather_facts: false
+
+   tasks:
+      - name: Eigrp neighbourship
+        cisco.ios.ios_config:
+                parents:
+                    - router eigrp 20
+                lines:
+                    - network 0.0.0.0 255.255.255.255
+
+
+      - name: Wait for EIGRP neighbors to form
+        ansible.builtin.pause:
+           seconds: 10
+
+      - name: Verify eigrp neighbourship
+        cisco.ios.ios_command:
+                commands:
+                    - show ip eigrp neighbors
+        register: neighbor
+
+      - name: Show neighbors
+        debug:
+          var: neighbor.stdout_lines
